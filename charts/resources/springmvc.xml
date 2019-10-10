@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        
+        
+        
+    <!-- 扫描注解 -->
+    <context:component-scan base-package="web"/>
+    <!-- 处理请求返回json字符串的乱码问题 -->  
+     <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+        
+      
+    
+    
+    <!-- 视图解析器    /WEB-INF/jsp/home.jsp-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<!-- 前缀 -->
+    	<property name="prefix" value="/WEB-INF/jsp/"></property>
+    	<!-- 后缀名 -->
+    	<property name="suffix" value=".jsp"/>
+    </bean>
+    
+    <!-- 扫描静态资源
+    	location:本地文件夹的相对路径
+    	mapping:映射路径
+     -->
+    <mvc:resources location="/statics/" mapping="/statics/**"/>
+    
+  
+    
+    <!-- 配置MultipartResolver，用于上传文件，使用spring的CommonsMultipartResolver -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+   		 <property name="maxUploadSize" value="50000000"/>
+   		 <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+    
+        
+</beans>
